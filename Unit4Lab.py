@@ -1,4 +1,4 @@
-#weightLoss.py
+#weight.py
 #Dylan Liesenfelt
 
 def main(): #defines this as the main function of the program
