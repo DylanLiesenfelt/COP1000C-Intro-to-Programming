@@ -81,7 +81,7 @@ def main(): # Defines the main function of this program
     print('Welcome to my number guessing game!') 
 
     while playStaus == 'y' or playStaus == 'Y': # Checks if play status equals y or Y, if so loop iterates  
-        playStaus = game(FIRST_NUMBER, LAST_NUMBER, CHANCES) # Calls the game function, passes global consts as parameters for the functions, when game function completes and its value is returned as the value of the playAgain function that value  will update the playStaus variable 
+        playStaus = game(FIRST_NUMBER, LAST_NUMBER, CHANCES) # Calls the game function, passes global consts as parameters for the functions, when game function completes and its value is returned as the value of the playAgain function that value will update the playStatus variable 
     else: print('Good Bye!') # If playStatus does not equal y or Y goodbye message prints and program exits 
 
 main()
