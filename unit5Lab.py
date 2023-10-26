@@ -25,66 +25,74 @@
 # Note
 # Define the number of rounds per game as a constant so it can easily be adjusted to make the game more or less challenging.
 
+
+# def chancesCounter(chancesLeft, wasUserCorrect):
+    #     if wasUserCorrect == False and chancesLeft > 0:
+    #         chancesLeft -= 1
+    #         return chancesLeft
+    #     elif wasUserCorrect == False and chancesLeft == 0:
+    #         return chancesLeft 
+    #     else:
+    #         return chancesLeft
+
 import random
 
-def main ():
+def main():
 
-    #Global Variables
-    FIRST = 1 # First number in the random number's range
-    LAST = 100 # Last number in the random number's range
-    ROUNDS = 7 # Assigns the value to the number of rounds
-    isGuessCorrect = False # Used later to determine if the guess was correct
-    playAgain = 'y'
-    # print(f'TEST: Answer {number}') # Test output to see number
-
-    def getGuess(first,last): # Function to get user input for guessing the number
-        guess = int(input(f'Please Enter A Number {first} - {last}: ')) # Assigns the value of the user input to guess variable
-        while guess > 100 or guess < 1: # Input validation loop, checks if number is range of FIRST and LAST
-            print(f'\nERROR: You Input {guess}. That Number Is Not In The Range {first} - {last}.') # Error message for if user fails input validation
-            guess = int(input(f'Please Enter A Number {first} - {last}: ')) # Ask user to enter value again
-        else:     
-            return guess # If user input passes validation retuens the value of guess to the function
+    # Functions
+    
+    def getGuess(firstNum, lastNum, chances):
+        print(f'\nChances left: {chances}')
+        userGuess = int(input(f'Please enter a whole number {firstNum} and {lastNum}: '))
+        while userGuess < firstNum or userGuess > lastNum:
+            print(f'ERROR: You entered {userGuess}. \nThat is not a whole number between {firstNum} and {lastNum}.')
+            userGuess = int(input(f'\nPlease enter a whole number {firstNum} and {lastNum}: '))
+        else:
+            return userGuess
         
-    def guessWin(number, guess): # Function to see if user guess matches the number
-        if guess > number: # Checks if user guess is higher than number, if so tells them thier guess is higher and returns a value of false to the function
-            print('\nToo High, Try Again')
+    def guessWin(guess, number):
+        if guess > number:
+            print('Too high, try again.')
             return False
-        elif guess < number: # Checks if user guess is lower than number, if so tells them thier guess is lower and returns a value of false to the function
-            print('\nToo Low, Try Again')
+        elif guess < number:
+            print('Too low, try again.')
             return False
-        else: # If users gues is not higher or lower it must equal the guess, congratulates the player and  returns value of true to the function
-            print(f'\nCongrats You Gussed Right! {number} Was The Answer! YOU WIN!' )
+        else:
             return True
-        
-    print('\nWelcome To My Guess The Number Game!')
+
+    def playAgain():
+        playAgain = input(f'To play again enter y, to exit hit ENTER: ')
+        return playAgain
     
-    def game(guessCorrect, rounds):
+    def game(first, last, chances):
+        number = random.randint(first, last)
+        guessWasCorrect = False
+        chances
 
-        print(f'You Will Have {ROUNDS} Chances To Guess The Number Correctly, Else You Lose :(')
-        number = random.randint(FIRST, LAST) # Assigns the value of the random number
-        
-        while guessCorrect == False:
-            if rounds == 0:
-                print('\nYou Ran Out Of Chances to Guess. You Lose :(')
-                playAgain = input('Enter Y To Play Again: ')
-                return playAgain
-            else: 
-                print(f'\nChances Left: {rounds}')
-                guess = getGuess(FIRST, LAST)
-                isGuessCorrect = guessWin(number, guess)
-                if isGuessCorrect == False:
-                    rounds -= 1
-                else:
-                    return isGuessCorrect
-            playAgain = input('Enter Y To Play Again: ')
-            return playAgain
+        while chances > 0 and guessWasCorrect == False:
+            if guessWasCorrect == False:
+                    guess = getGuess(first, last, chances)
+                    guessWasCorrect = guessWin(guess, number)
+                    chances -= 1
+                    if guessWasCorrect == True:
+                        print(f'\nCongrats {number} was the answer! You win!')
+                        break
+        else: 
+            print('\nYou ran out of chances :( You lose.')
     
-    while playAgain == 'y' or playAgain == 'Y':
-        game(isGuessCorrect, ROUNDS)
-    else:
-        print('Thanks For Playing! Good Bye')
+        playStatus = playAgain()
+        return playStatus       
 
+    # Global Variables
+    FIRST_NUMBER = 1
+    LAST_NUMBER = 100
+    CHANCES = 7
+    playStaus = 'y'
 
+    print('Welcome to my number guessing game!')
 
+    while playStaus == 'y' or playStaus == 'Y':
+        playStaus = game(FIRST_NUMBER, LAST_NUMBER, CHANCES)
+    else: print('Good Bye!') 
 
-main ()    
+main()
