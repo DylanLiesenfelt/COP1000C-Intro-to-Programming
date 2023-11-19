@@ -33,12 +33,19 @@ def newLine(data):
     return data.readline().strip()
 
 def main():
-    try:
-        another = 'y'
-        while another == 'y' or 'Y':
+    
+    another = 'y'
+    while another == 'y' or another == 'Y':
+        try:
+            
+            passing = 0
+            failing = 0
+            students = 0
+            gradeSum = 0
+
+        
 
             course = input('Please ENTER The Course File: ')
-
             with open(f'{course}') as file:
                 
                 linePrint()
@@ -47,32 +54,54 @@ def main():
 
                 course = newLine(file)
                 print(f'COURSE: {course}')
+
                 professor = newLine(file)
                 term = newLine(file)
                 print(f'PROFESSOR: {professor:<41}', f'TERM: {term:>}\n')
-                print(f'{"STUDENT":<30}', f'{"GRADE:":>}')
+                
+                print(f'{"STUDENT:":<20}', f'{"GRADE:":^30}')
                 linePrint()
                 
                 name = newLine(file)
-                score = newLine(file)
+                grade = newLine(file)
                 while name != "" or grade != "":
+                    gradeInt = int(grade)
+                    if gradeInt >= 60:
+                        passing += 1
+                    else:
+                        failing += 1 
+                    students += 1
+                    gradeSum += gradeInt 
+                    print(f'{name:<20}', f'{grade:^30}')
 
+                    name = newLine(file)
+                    grade = newLine(file)
 
+                print('\nSTUDENT PERFORMANCE:')
+                linePrint()
 
-            another = input('Please ENTER y to look at another file.\nElse ENTER n to quit: ')
-            print(another)
-        else:
-            print('Good Bye') 
-            time.sleep(2)
-       
+                print(f'PASSED: {passing:<25}', f'FAILED: {failing}')
+                passPercentage = (passing / students) * 100
 
+                print(f'PASSING PERCENT: {passPercentage:.0f}%')
+                gradeAvg = gradeSum / 0
 
+                print(f'AVERAGE GRADE: {gradeAvg:.0f}\n')
+
+                another = input('Would  you like to process another file (y/n)')
                 
-
-        
-    except Exception as error:
-        print(error)
-         
-
-
+        except Exception as error:
+            print(f'\nERROR: {error}')
+            print('Restarting Program in')
+            countdown = 3 
+            while countdown > 0:
+                print(countdown)
+                time.sleep(1)
+                countdown -= 1
+            main()
+           
+    else:
+        print("Good Bye.")
+        time.sleep(2)
+               
 main()
