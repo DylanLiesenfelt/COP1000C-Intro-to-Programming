@@ -27,7 +27,7 @@
 import time
 
 def linePrint():
-    print('----------------------------------------------------------------------')
+    print('-' * 70)
 
 def newLine(data):
     return data.readline().strip()
@@ -46,7 +46,7 @@ def main():
         
 
             course = input('Please ENTER The Course File: ')
-            with open(f'{course}') as file:
+            with open(f'{course}', 'r') as file:
                 
                 linePrint()
                 print(f'{"COURSE SUMMARY":^70}')
@@ -84,7 +84,7 @@ def main():
                 passPercentage = (passing / students) * 100
 
                 print(f'PASSING PERCENT: {passPercentage:.0f}%')
-                gradeAvg = gradeSum / 0
+                gradeAvg = gradeSum / students
 
                 print(f'AVERAGE GRADE: {gradeAvg:.0f}\n')
 
