@@ -14,7 +14,7 @@
 # [[8, 3, 4], [1, 5, 9], [6, 7, 2]]
 # [[6, 1, 8], [7, 5, 3], [2, 9, 4]]
 
-# def is_magic_square(grid):
+def is_magic_square(grid):
     # Calculate the sum of the first row to be used as a reference sum
     ref_sum = sum(grid[0])
 
