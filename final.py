@@ -23,21 +23,56 @@ def menu1():
         'The house must throw the dice until the total is 17 or higher. At 17 or higher, the house must stay.')
 
 def displayScore(house, name, player):
-    print(f'House: {house}  ||  {name}: {player}')
-    print('-' * 20)
+    print(f'\nHouse: {house}  ||  {name}: {player}')
+    print('-' * 25)
 
+def houseTurn(houseScore):
+    if houseScore >= 17:
+        print('House Stays')
+        return 0
+    else:
+        if houseScore > 14:
+            roll1 = diceRoll()
+            print(f'House Roll: {roll1}')
+            return roll1
+        else:
+            roll1 = diceRoll()
+            roll2 = diceRoll()
+            print(f'House Roll: {roll1} & {roll2}')
+            roll = roll1 + roll2
+            return roll
 
-def gameOver(playerScore, playerName, houseScore ):
-    if playerScore >= 21:
-        if playerScore == 21:
-            print(f'{playerName} Wins: {playerScore}')  
-        if playerScore > 21:
-            print(f'{playerName} Bust :( {playerScore}')      
-    if houseScore >= 21:
-        if houseScore == 21:
-            print(f'House Wins: {houseScore}')  
-        if houseScore > 21:
-            print(f'House Bust {houseScore}') 
+def playerTurn(playerChoice, playerName, playerScore):
+    if playerChoice == 'h' or playerChoice == 'H':
+        if playerScore > 14:
+            roll1 = diceRoll()
+            print('-' * 25)
+            print(f'\n{playerName} Roll: {roll1}')
+            return roll1
+        else:
+            roll1 = diceRoll()
+            roll2 = diceRoll()
+            print('-' * 25)
+            print(f'\n{playerName} Roll: {roll1} & {roll2}')
+            roll = roll1 + roll2
+            return roll
+    if playerChoice == 's' or playerChoice == 'S':
+        print(f'{playerName} Stays')
+        return 0
+
+def gameOver(playerScore, playerName, houseScore):
+    if playerScore >= 21 or houseScore >= 21:
+        if playerScore == 21 and houseScore != 21:
+            print(f'{playerName} Wins: {playerScore}')
+        elif playerScore != 21 and houseScore == 21:
+            print(f'House Wins: {houseScore}')
+        elif playerScore > 21 and houseScore <= 21:
+            print(f'{playerName} Bust :( {playerScore}')
+        elif playerScore <= 21 and houseScore > 21:
+            print(f'House Bust {houseScore}')
+        elif playerScore == 21 and houseScore == 21:
+            print(f'Both {playerName} and House have 21, Draw.')
+
 
 
 
@@ -45,53 +80,62 @@ def gameOver(playerScore, playerName, houseScore ):
 def menu2(playerName):
     houseScore = 0
     playerScore = 0
-    print('\nGame Start\n')
+    print('\nGame Start')
     displayScore(houseScore, playerName, playerScore)
     
-    while playerScore <= 21 & houseScore <= 21:
+    while playerScore <= 21 and houseScore <= 21:
             
         playerChoice = input('ENTER h to HIT, or s to STAY:')
         while playerChoice not in ['h','H','s','S']:
 
             print('ERROR: You did not ENTER h or s.')
             print(playerChoice)
-            playerChoice = input('ENTER h to HIT, or s to STAY:')
+            playerChoice = input('ENTER h to HIT, or s to STAY:', '\n')
 
         else: 
-            playerScore = 21
+            playerResult = playerTurn(playerChoice, playerName, playerScore)
+            houseResult = houseTurn(houseScore)
+            playerScore += playerResult
+            houseScore += houseResult
+            displayScore(houseScore, playerName, playerScore)
     else:
         gameOver(playerScore, playerName, houseScore)
         playAgain = input('Would you like to play again (y/n): ')
         return playAgain
 
-                
-    
 
 def main():
-    playAgain = 'y'
+    try:
+        playAgain = 'y'
 
-    print('Welcome to Vingt-en-un!')
-    playerName = input('\nPlease ENTER your Name: ')
+        print('Welcome to Vingt-en-un!')
+        playerName = input('\nPlease ENTER your Name: ')
 
-    while playAgain == 'y' or playAgain == "Y":
+        while playAgain == 'y' or playAgain == "Y":
 
-        menu = menuNav()
-        while menu not in [1, 2, 3]:
-            print('ERROR: You did not enter a number 1-3')
             menu = menuNav()
+            while menu not in [1, 2, 3]:
+                print('ERROR: You did not enter a number 1-3')
+                menu = menuNav()
 
+            else:
+                if menu == 1:
+                    menu1()
+                if menu == 2:
+                    playAgain = menu2(playerName)
+                if menu == 3:
+                    playAgain = ''     
+            
         else:
-            if menu == 1:
-                menu1()
-            if menu == 2:
-                playAgain = menu2(playerName)
-            if menu == 3:
-                playAgain = ''     
-        
-    else:
-        print(f'\nThanks for playing {playerName}!')
-        time.sleep(1)
-        print("Good Bye.")
-        time.sleep(2)
+            print(f'\nThanks for playing {playerName}!')
+            time.sleep(1)
+            print("Good Bye.")
+            time.sleep(2)
+
+    except Exception as error:
+            print(f'\nERROR: {error}')
+            print('Restarting Program')
+            time.sleep(2)
+            main()
 
 main()
