@@ -1,3 +1,7 @@
+#Dylan Liesenfelt
+#VingEtUn.py
+#COP1000C
+
 import random
 import time
 
